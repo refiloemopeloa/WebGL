@@ -162,6 +162,35 @@ If everything went well, you should see the following:
 
 ![hello-WebGL.png](assets/hello-WebGL.png)
 
+## Adding 2D objects
+
+Let's start by adding a 2D square to our WebGL context. To do this, we will be using the `glMatrix` library to perform matrix operations. To do this, we have to make a few changes to our `index.html` file template.
+
+Create a new directory called `square` and add the usual `index.html` and `main.js` files. Then, add the following code to your `index.html`:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>WebGL Demo</title>
+    <link rel="stylesheet" href="./webgl.css" type="text/css" />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+      integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+      crossorigin="anonymous"
+      defer></script>
+    <script src="webgl-demo.js" type="module"></script>
+  </head>
+
+  <body>
+    <canvas id="glcanvas" width="640" height="480"></canvas>
+  </body>
+</html>
+```
+
+To display anything in WebGL, you have to make use of shaders. Because of this, the guide for adding 2D objects continues in this guide: [Shaders in WebGL](https://github.com/refiloemopeloa/Shaders/blob/main/WebGL/Shaders%20in%20WebGL.md). You can read on shaders if you would like, but if you want to skip straight to the part where we add a square to the screen, skip to the heading **Square Demo**.
+
 
 # References
 
