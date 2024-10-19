@@ -162,6 +162,68 @@ If everything went well, you should see the following:
 
 ![hello-WebGL.png](assets/hello-WebGL.png)
 
+## Data Structures
+
+Let's start with the data structures we can us in WebGL.
+### glMatrix
+
+`glMatrix` is a popular library for handling matrix and vector operations in WebGL. It is optimized for high performance in graphics computations.
+
+Here's an example:
+
+```js
+const projection = mat4.create();    // projection matrix
+const modelview = mat4.create();     // modelview matrix
+const modelviewProj = mat4.create(); // combined transformation matrix
+const normalMatrix = mat3.create(); // matrix, derived from modelview matrix, for transforming normal vectors
+
+mat4.multiply( modelviewProj, projection, modelview ); //Multiply the modelview and projection transforms to get the combined transform
+```
+
+### Vertex Buffer Object
+
+A vertex buffer object is basically block of memory that holds the coordinates or other attributes for a set of vertices.
+
+Here's some code showing to enable and use VBOs:
+
+```js
+function drawPrimitive( primitiveType, color, vertices ) {
+     gl.enableVertexAttribArray(a_coords_loc);
+     gl.bindBuffer(gl.ARRAY_BUFFER,a_coords_buffer);
+     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STREAM_DRAW);
+     gl.uniform4fv(u_color, color);
+     gl.vertexAttribPointer(a_coords_loc, 3, gl.FLOAT, false, 0, 0);
+     gl.drawArrays(primitiveType, 0, vertices.length/3);
+}
+```
+
+## Model View Projection
+
+When we give our models coordinates, they aren't immediately visible on our screen. We need to do a bit of manipulating first.
+
+### Model matrix
+
+The model matrix defines how you take the original model and move it around in 3D world space.
+
+### Projection matrix
+
+The projection matrix is used to convert world space coordinates into clip space coordinates.
+
+#### Perspective projection matrix
+
+This mode is used to mimic the effects of a typical camera viewing the world.
+
+### View matrix
+
+The view matrix moves the objects in the scene to simulate the position of the camera being changed, altering what the viewer currently sees. It's job is to translate, rotate, and scale objects in the scene.
+
+### Clip space
+
+Clip space defines the region that the GPU renders. The vertex shader transforms the points of our model to clip space for the GPU to render. Anything outside of the range of clip space will not be rendered. Clip coordinates range between `(-1,-1,-1)` and `(1,1,1)`. This is known as Normalized Device Coordinates (NDC).
+
+### Viewing frustrum
+
+The viewing frustrum represents the region of space that is visible to the user. It is defined by the field-of-view, nearest distance and farthest distance.
 ## Adding 2D objects
 
 Let's start by adding a 2D square to our WebGL context. To do this, we will be using the `glMatrix` library to perform matrix operations. To do this, we have to make a few changes to our `index.html` file template.
@@ -189,10 +251,11 @@ Create a new directory called `square` and add the usual `index.html` and `main.
 </html>
 ```
 
-To display anything in WebGL, you have to make use of shaders. Because of this, the guide for adding 2D objects continues in this guide: [Shaders in WebGL](https://github.com/refiloemopeloa/Shaders/blob/main/WebGL/Shaders%20in%20WebGL.md). You can read on shaders if you would like, but if you want to skip straight to the part where we add a square to the screen, skip to the heading **Square Demo**.
+To display anything in WebGL, you have to make use of shaders. Because of this, the guide for adding 2D objects continues in this guide: [Shaders in WebGL: Square demo](https://github.com/refiloemopeloa/Shaders/blob/main/WebGL/Shaders%20in%20WebGL.md#square-demo). You can read on shaders if you would like, but if not skip straight to the part where we add a square to the screen.
 
 
 # References
 
 1. [WebGL: 2D and 3D graphics for the web - Web APIs | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API
 2. [Getting started with WebGL - Web APIs | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Getting_started_with_WebGL)
+3. [WebGL model view projection - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_model_view_projection)
